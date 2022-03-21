@@ -47,6 +47,45 @@ impl Component for StructComponent {
     }
 }
 
+#[function_component(FunctionComponent)]
+fn function_component() -> Html {
+    let counter = use_state(|| 0i64);
+
+    let get_butn_click_handler = |amount: i64| { 
+        let counter = counter.clone();
+        
+        return Callback::from(move |_| {
+            counter.set(*counter + amount);
+        });
+    };
+
+    html! {
+        <span>
+            <span>
+                <p>{ "count: " }</p>
+                <p>{ *counter }</p>
+            </span>
+            <span>
+                <button onclick={get_butn_click_handler(1)}>{ "+" }</button>
+                <button onclick={get_butn_click_handler(-1)}>{ "-" }</button>
+            </span>
+        </span>
+    }
+}
+
+#[function_component(AppComponent)]
+fn app_component() -> Html {
+    html! {
+        <span>
+            <p>{ "Application" }</p>
+            <span>
+                <StructComponent />
+                <FunctionComponent />
+            </span>
+        </span>
+    }
+}
+
 fn main() {
-    yew::start_app::<StructComponent>();
+    yew::start_app::<AppComponent>();
 }
